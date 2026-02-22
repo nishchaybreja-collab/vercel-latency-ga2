@@ -17,9 +17,18 @@ def home():
     return {"message": "API running"}
 
 # Handle preflight (VERY IMPORTANT for Vercel)
+from fastapi.responses import JSONResponse
+
 @app.options("/{path:path}")
 async def options_handler(path: str):
-    return {}
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        },
+    )
 
 @app.post("/api/latency")
 async def latency(request: Request):
